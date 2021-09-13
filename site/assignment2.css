@@ -1,0 +1,42 @@
+ h1{
+ 	margin-top: 20px;
+ 	margin-bottom: 50px;
+ 	text-align: center;
+ }
+ .p0 {
+	color: solid black;
+	background-color: gray;
+	font-family: sans-serif;
+	height: 160px;
+	width: 30%;
+	border: 1px solid black;
+	float: left;
+	padding-left: 10px;
+	overflow: hidden;
+	margin-left: 1.4%;
+	margin-bottom: 20px;
+ }
+ .p1 {
+	background-color: hotpink;
+	border: 1px solid black;
+	box-sizing: border-box;
+	margin-top: 0px;
+	width: 30%;
+	padding: 5px;
+	text-align: center;
+	margin-left: 70%;
+ }
+ @media (max-width: 991px) and (min-width: 768px)
+ {
+ 	.p0{
+ 		width: 45%;
+ 		margin-left: 3%;
+ 	}
+ }
+ @media (max-width: 767px)
+ {
+ 	.p0{
+ 		width: 85%;
+ 		margin-left: 5%;
+ 	}
+ }
