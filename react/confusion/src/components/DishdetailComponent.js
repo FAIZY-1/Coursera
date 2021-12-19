@@ -1,17 +1,18 @@
-import React, { Component } from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import React from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
 
-class DishDetail extends Component {
-    render() {
+
+    const DishDetail = (props) => {
         if (this.props.dishr != null) {
             return (
-                <div className="row">
-                    <div className="col-md-5 col-12 m-1">
-                        {this.renderDish(this.props.dishr)}
-                    </div>
-                    <div className="col-md-5 col-12 m-1">
-                        {this.renderComments(this.props.dishr.comments)}
+                <div className="container">
+                    <div className="row">
+                        <div className="col-md-5 col-12 m-1">
+                            {RenderDish(this.props.dishr)}
+                        </div>
+                        <div className="col-md-5 col-12 m-1">
+                            {RenderComments(this.props.dishr.comments)}
+                        </div>
                     </div>
                 </div>
             );
@@ -21,7 +22,8 @@ class DishDetail extends Component {
                 <div>Hello Dish</div>
             )
     }
-    renderDish(dish) {
+
+    function RenderDish(dish) {
         if (dish != null)
             return (
                 <Card>
@@ -37,13 +39,13 @@ class DishDetail extends Component {
                 <div>No shit</div>
             );
     }
-    renderComments(comments) {
+    function RenderComments(comments) {
         if (comments != null) {
             const list = comments.map((comments) => {
                 return (
                     <ul id={comments.id} className="list-unstyled">
                         <li>{comments.comment}</li>
-                        <li>{comments.author}</li>
+                        <li>{comments.author}, {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit' }).format(new Date(Date.parse(comments.date)))}</li>
                     </ul>
                 );
             });
@@ -54,11 +56,9 @@ class DishDetail extends Component {
                 </div>
             );
         }
-        else 
-        return(
-            <div>No comments</div>
-        );
-}
-}
-
+        else
+            return (
+                <div>No comments</div>
+            );
+    }
 export default DishDetail; 
