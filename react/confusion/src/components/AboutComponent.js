@@ -3,24 +3,24 @@ import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media} from 're
 import { Link } from 'react-router-dom';
 import { LEADERS } from '../shared/leaders';
 
+function RenderLeader(props){
+    return(
+     <Media tag="li" className="mt-5">
+               <Media left middle>
+                   <Media object src={props.thisl.image} />
+               </Media>
+               <Media body className="ml-5">
+                 <Media heading>{props.thisl.name}</Media>
+                 <Media>{props.thisl.designation}</Media>
+                 <p className='mt-2'>{props.thisl.description}</p>
+               </Media>
+     </Media>
+    );
+ }
+
 function About(props) {
 
-    function RenderLeader(props){
-       return(
-        <Media tag="li" className="mt-5">
-                  <Media left middle>
-                      <Media object src={props.thisl.image} />
-                  </Media>
-                  <Media body className="ml-5">
-                    <Media heading>{props.thisl.name}</Media>
-                    <Media>{props.thisl.designation}</Media>
-                    <p className='mt-2'>{props.thisl.description}</p>
-                  </Media>
-        </Media>
-       );
-    }
-
-    const leaders = LEADERS.map((leader) => {
+    const leaders = props.leaders.map((leader) => {
         return (
             <RenderLeader thisl={leader}/>
         );
