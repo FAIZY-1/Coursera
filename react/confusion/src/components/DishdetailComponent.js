@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem, Button, Modal, ModalHeader, ModalBody, Row, Col, Label } from 'reactstrap';
 import { Link } from 'react-router-dom';
 import { Control, LocalForm, Errors } from 'react-redux-form';
-import { Component } from 'react/cjs/react.production.min';
+import { Loading } from './LoadingComponent';
 
 const required = (val) => val && val.length;
 const maxLength = (len) => (val) => !(val) || (val.length <= len);
@@ -26,8 +26,8 @@ class CommentForm extends Component {
 
     handleSubmit(values) {
         this.toggleModal();
-        console.log('Current State is: ' + JSON.stringify(values));
-        alert('Current State is: ' + JSON.stringify(values));
+        if (values.rating != null)
+            this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
     render() {
@@ -53,16 +53,16 @@ class CommentForm extends Component {
                                 </Col>
                             </Row>
                             <Row className="form-group">
-                                <Label md={12} htmlFor="name">Your Name</Label>
+                                <Label md={12} htmlFor="author">Your Name</Label>
                                 <Col md={12}>
-                                    <Control.text model=".name" id="name" name="name"
+                                    <Control.text model=".author" id="author" name="author"
                                         placeholder="Your Name"
                                         className="form-control"
                                         validators={{
                                             required, minLength: minLength(3), maxLength: maxLength(15)
                                         }}
                                     />
-                                    <Errors className="text-danger" model=".name" show="touched" 
+                                    <Errors className="text-danger" model=".author" show="touched" 
                                         messages={{
                                             required: 'The name is Required.. ',
                                             minLength: 'Must be Greater than 3 characters',
@@ -91,7 +91,25 @@ class CommentForm extends Component {
 
 
 const DishDetail = (props) => {
-    if (props.dishr != null && props.coms != null)
+    if(props.isLoading){
+        return(
+            <div className='container'>
+                <div className='row'>
+                    <Loading />
+                </div>
+            </div>
+        );
+    }
+    else if(props.errMess){
+        return(
+            <div className='container'>
+                <div className='row'>
+                    <h4>{props.errMess}</h4>
+                </div>
+            </div>
+        );
+    }
+    else if (props.dishr != null && props.coms != null)
         return (
             <div className="container">
                 <div className="row">
@@ -109,8 +127,9 @@ const DishDetail = (props) => {
                         <RenderDish dish={props.dishr} />
                     </div>
                     <div className="col-12 col-md-5 m-1">
-                        <RenderComments coms={props.coms} />
-                        <CommentForm />
+                        <RenderComments coms={props.coms} 
+                          addComment={props.addComment}
+                          dishId={props.dishr.id}/>
                     </div>
                 </div>
             </div>
@@ -132,7 +151,7 @@ function RenderDish({ dish }) {
         </Card>
     );
 }
-function RenderComments({ coms }) {
+function RenderComments({ coms, addComment, dishId }) {
     if (coms != null) {
         const temp = coms.map((com) => {
             return (
@@ -149,6 +168,7 @@ function RenderComments({ coms }) {
                 <ul className="list-unstyled">
                     {temp}
                 </ul>
+                <CommentForm dishId={dishId} addComment={addComment}/>
             </div>
         );
     }
